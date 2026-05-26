@@ -6,6 +6,6 @@ import lombok.Data;
 public class PaymentProcessedEvent {
 
     private String orderId;
-
+    private String productName;
     private String status;
 }

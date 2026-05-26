@@ -23,6 +23,6 @@ public class OrderConsumer {
 
         System.out.println("Payment processing started");
 
-        paymentService.processPayment(event.getOrderId());
+        paymentService.processPayment(event.getOrderId(),event.getProductName());
     }
 }

@@ -15,7 +15,7 @@ public class PaymentService {
         this.paymentProducer = paymentProducer;
     }
 
-    public void processPayment(String orderId) {
+    public void processPayment(String orderId, String productName) {
 
         Random random = new Random();
 
@@ -27,6 +27,7 @@ public class PaymentService {
                     new PaymentProcessedEvent();
 
             event.setOrderId(orderId);
+            event.setProductName(productName);
             event.setStatus("SUCCESS");
 
             paymentProducer.sendPaymentSuccess(event);
