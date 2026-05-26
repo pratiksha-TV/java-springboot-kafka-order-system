@@ -1,4 +1,9 @@
 HELP.md
+.idea/
+.DS_Store
+*.zip
+target/
+*.iml
 target/
 .mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
