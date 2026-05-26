@@ -7,4 +7,6 @@ public class PaymentProcessedEvent {
     private String orderId;
 
     private String status;
+
+    private String productName;
 }
