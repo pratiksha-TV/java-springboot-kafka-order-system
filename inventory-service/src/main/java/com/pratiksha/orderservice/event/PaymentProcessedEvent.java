@@ -1,4 +1,4 @@
-package com.example.inventoryservice.event;
+package com.pratiksha.orderservice.event;
 import lombok.Data;
 
 @Data

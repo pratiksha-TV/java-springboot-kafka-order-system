@@ -1,6 +1,6 @@
 package com.example.inventoryservice.consumer;
 
-import com.example.inventoryservice.event.PaymentProcessedEvent;
+import com.pratiksha.orderservice.event.PaymentProcessedEvent;
 import com.example.inventoryservice.service.InventoryService;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;

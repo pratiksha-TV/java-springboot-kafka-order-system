@@ -1,8 +1,8 @@
 package com.example.inventoryservice.service;
 
 
-import com.example.inventoryservice.event.InventoryFailedEvent;
-import com.example.inventoryservice.event.InventoryUpdatedEvent;
+import com.pratiksha.orderservice.event.InventoryFailedEvent;
+import com.pratiksha.orderservice.event.InventoryUpdatedEvent;
 import com.example.inventoryservice.model.Inventory;
 import com.example.inventoryservice.producer.InventoryProducer;
 import com.example.inventoryservice.repository.InventoryRepository;
