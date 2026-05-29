@@ -22,14 +22,13 @@ public class OrderService {
     }
 
     public Order createOrder(Order order) {
-
         order.setStatus("CREATED");
 
         Order savedOrder = orderRepository.save(order);
 
         OrderPlacedEvent event = new OrderPlacedEvent();
 
-        event.setOrderId(savedOrder.getId());
+        event.setOrderId(String.valueOf(savedOrder.getId()));
         event.setProductName(savedOrder.getProductName());
         event.setAmount(savedOrder.getAmount());
 

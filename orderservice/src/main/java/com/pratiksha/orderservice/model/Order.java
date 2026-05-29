@@ -1,15 +1,16 @@
 package com.pratiksha.orderservice.model;
 
-
+import jakarta.persistence.*;
 import lombok.Data;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "orders")
 @Data
+@Entity
+@Table(name = "orders")
 public class Order {
+
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     private String productName;
 
