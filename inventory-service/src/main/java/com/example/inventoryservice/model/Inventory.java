@@ -1,16 +1,17 @@
 package com.example.inventoryservice.model;
 
 import lombok.Data;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+import jakarta.persistence.*;
 
 
 @Data
-@Document(collection = "inventory")
+@Entity
+@Table(name="inventory")
 public class Inventory {
 
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
     private String productName;
 
