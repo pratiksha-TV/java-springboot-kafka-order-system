@@ -29,7 +29,6 @@ public class PaymentService {
             event.setOrderId(orderId);
             event.setProductName(productName);
             event.setStatus("SUCCESS");
-
             paymentProducer.sendPaymentSuccess(event);
 
         } else {

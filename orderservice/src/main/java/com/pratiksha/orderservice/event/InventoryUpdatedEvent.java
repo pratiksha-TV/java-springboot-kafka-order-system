@@ -3,10 +3,9 @@ package com.pratiksha.orderservice.event;
 import lombok.Data;
 
 @Data
-public class PaymentProcessedEvent {
+public class InventoryUpdatedEvent {
 
     private String orderId;
-    private String productName;
-    private String status;
 
+    private String status;
 }
