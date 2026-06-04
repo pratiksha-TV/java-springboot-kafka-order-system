@@ -37,6 +37,12 @@ public class PaymentFailedConsumer {
         eventStore.setCreatedAt(LocalDateTime.now());
         eventStoreRepository.save(eventStore);
 
+        EventStore eventStore1 = new EventStore();
+        eventStore1.setOrderId(Long.valueOf(event.getOrderId()));
+        eventStore1.setEventType("ORDER_CANCELLED");
+        eventStore1.setCreatedAt(LocalDateTime.now());
+        eventStoreRepository.save(eventStore1);
+
 
         Order order =
                 orderRepository.findById(event.getOrderId())

@@ -63,19 +63,4 @@ public class PaymentProcessedConsumer {
         orderViewRepository.save(view);
     }
 
-    public void handlePaymentSuccess(
-            PaymentProcessedEvent event) {
-
-        OrderView view =
-                orderViewRepository.findById(
-                        Long.valueOf(event.getOrderId())
-                ).orElseThrow();
-
-
-        view.setStatus(
-                "PAID"
-        );
-
-        orderViewRepository.save(view);
-    }
 }
