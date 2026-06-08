@@ -24,24 +24,16 @@ public class PaymentSuccessConsumer {
 
    public void consume(PaymentProcessedEvent event){
 
-        try {
-            inventoryService.updateInventory(
-                    event.getOrderId(), event.getProductName());
-            throw new RuntimeException(
-                    "Inventory processing failed"
-            );
+        System.out.println(
+                "Processing Inventory..."
+        );
 
-        } catch (Exception ex) {
-
-            kafkaTemplate.send(
-                    "inventory-dlq-topic",
-                    event
-            );
-
-            System.out.println(
-                    "Message moved to DLQ"
-            );
-        }
+        System.out.println(
+                "Retry "+event
+        );
+        throw new RuntimeException(
+                "Inventory Failed"
+        );
 
     }
 
