@@ -7,6 +7,7 @@ import com.pratiksha.orderservice.repository.EventStoreRepository;
 import com.pratiksha.orderservice.repository.OrderRepository;
 import com.pratiksha.orderservice.repository.OrderViewRepository;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -17,11 +18,13 @@ public class PaymentProcessedConsumer {
     private final OrderRepository orderRepository;
     private final EventStoreRepository eventStoreRepository;
     private final OrderViewRepository orderViewRepository;
+    private final SimpMessagingTemplate messagingTemplate;
 
-    public PaymentProcessedConsumer(OrderRepository orderRepository, EventStoreRepository eventStoreRepository, OrderViewRepository orderViewRepository) {
+    public PaymentProcessedConsumer(OrderRepository orderRepository, EventStoreRepository eventStoreRepository, OrderViewRepository orderViewRepository, SimpMessagingTemplate messagingTemplate) {
         this.orderRepository = orderRepository;
         this.eventStoreRepository = eventStoreRepository;
         this.orderViewRepository = orderViewRepository;
+        this.messagingTemplate = messagingTemplate;
     }
 
     @KafkaListener(

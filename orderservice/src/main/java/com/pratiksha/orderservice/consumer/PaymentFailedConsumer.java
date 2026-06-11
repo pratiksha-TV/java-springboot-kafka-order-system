@@ -3,11 +3,13 @@ package com.pratiksha.orderservice.consumer;
 import com.pratiksha.orderservice.event.PaymentFailedEvent;
 import com.pratiksha.orderservice.model.EventStore;
 import com.pratiksha.orderservice.model.Order;
+import com.pratiksha.orderservice.model.OrderStatusMessage;
 import com.pratiksha.orderservice.model.OrderView;
 import com.pratiksha.orderservice.repository.EventStoreRepository;
 import com.pratiksha.orderservice.repository.OrderRepository;
 import com.pratiksha.orderservice.repository.OrderViewRepository;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -18,11 +20,13 @@ public class PaymentFailedConsumer {
     private final OrderRepository orderRepository;
     private final EventStoreRepository eventStoreRepository;
     private final OrderViewRepository orderViewRepository;
+    private final SimpMessagingTemplate messagingTemplate;
 
-    public PaymentFailedConsumer(OrderRepository orderRepository, EventStoreRepository eventStoreRepository, OrderViewRepository orderViewRepository) {
+    public PaymentFailedConsumer(OrderRepository orderRepository, EventStoreRepository eventStoreRepository, OrderViewRepository orderViewRepository, SimpMessagingTemplate messagingTemplate) {
         this.orderRepository = orderRepository;
         this.eventStoreRepository = eventStoreRepository;
         this.orderViewRepository = orderViewRepository;
+        this.messagingTemplate = messagingTemplate;
     }
 
     @KafkaListener(
@@ -63,20 +67,23 @@ public class PaymentFailedConsumer {
         orderViewRepository.save(view);
 
         System.out.println("Order cancelled due to payment failure");
-    }
 
+        OrderStatusMessage message =
+                new OrderStatusMessage();
 
-    public void handlePaymentFailed(
-            PaymentFailedEvent event) {
+        message.setOrderId(
+                Long.valueOf(event.getOrderId())
+        );
 
-        OrderView view =
-                orderViewRepository.findById(
-                        Long.valueOf(event.getOrderId())
-                ).orElseThrow();
-        view.setStatus(
+        message.setStatus(
                 "CANCELLED"
         );
 
-        orderViewRepository.save(view);
+        messagingTemplate.convertAndSend(
+                "/topic/order-status",
+                message
+        );
     }
+
+
 }

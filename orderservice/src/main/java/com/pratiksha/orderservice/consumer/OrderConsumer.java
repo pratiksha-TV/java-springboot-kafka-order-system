@@ -3,12 +3,14 @@ package com.pratiksha.orderservice.consumer;
 import com.pratiksha.orderservice.event.InventoryUpdatedEvent;
 import com.pratiksha.orderservice.event.OrderPlacedEvent;
 import com.pratiksha.orderservice.model.EventStore;
+import com.pratiksha.orderservice.model.OrderStatusMessage;
 import com.pratiksha.orderservice.model.OrderView;
 import com.pratiksha.orderservice.repository.EventStoreRepository;
 import com.pratiksha.orderservice.repository.OrderRepository;
 import com.pratiksha.orderservice.repository.OrderViewRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -18,6 +20,7 @@ import java.time.LocalDateTime;
 public class OrderConsumer {
     private final EventStoreRepository eventStoreRepository;
     private final OrderViewRepository orderViewRepository;
+    private final SimpMessagingTemplate messagingTemplate;
 
     @KafkaListener(topics = "inventory-success-topic",
             groupId = "order-group"
@@ -35,6 +38,22 @@ public class OrderConsumer {
         eventStore1.setEventType("ORDER_COMPLETED");
         eventStore1.setCreatedAt(LocalDateTime.now());
         eventStoreRepository.save(eventStore1);
+
+        OrderStatusMessage message =
+                new OrderStatusMessage();
+
+        message.setOrderId(
+                Long.valueOf(event.getOrderId())
+        );
+
+        message.setStatus(
+                "ORDER_COMPLETED"
+        );
+
+        messagingTemplate.convertAndSend(
+                "/topic/order-status",
+                message
+        );
 
     }
 
@@ -56,6 +75,22 @@ public class OrderConsumer {
         );
 
         orderViewRepository.save(view);
+
+        OrderStatusMessage message =
+                new OrderStatusMessage();
+
+        message.setOrderId(
+                Long.valueOf(event.getOrderId())
+        );
+
+        message.setStatus(
+                "CREATED"
+        );
+
+        messagingTemplate.convertAndSend(
+                "/topic/order-status",
+                message
+        );
     }
 
 }
